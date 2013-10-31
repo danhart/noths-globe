@@ -1,0 +1,119 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Globe</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body onload="start()" id="dataviz" class="">
+    <div id="wrapper">
+      <div id="loading">
+        <h2>Loading...</h2>
+      </div>
+
+      <div>
+        <table id="marker_template" class="marker" style="left:'0px';top:'0px'"><tr><td><span id="countryText" class="country">
+              </span></td><td class="detail" id="detailText">
+              <!--<span id="detailText" class="detail">
+        </span>--></td></tr></table>
+      </div>
+
+      <div id="visualization" >
+        <!-- 2D overlay elements go in here -->
+
+        <div id="glContainer">
+          <!-- 3D webgl canvas here -->
+        </div>
+      </div>
+
+      <script src="js/Tween.js"></script>
+      <script src="js/dat.gui.min.js"></script>
+      <script src="js/Three.js"></script>
+      <script src="js/THREEx.KeyboardState.js"></script>
+      <script src="js/THREEx.WindowResize.js"></script>
+      <script src="js/Stats.js"></script>
+      <script src="js/jquery-1.7.1.min.js"></script>
+      <script src="js/jquery-ui-1.8.21.custom.min.js"></script>
+      <script src="js/RequestAnimationFrame.js"></script>
+      <script src="js/ShaderExtras.js"></script>
+      <script src="js/canvg.js"></script>
+      <script src="js/rgbcolor.js"></script>
+      <script src="js/innersvg.js"></script>
+
+      <script src="js/util.js"></script>
+      <script src="js/mousekeyboard.js"></script>
+      <script src="js/datguicontrol.js"></script>
+      <script src="js/dataloading.js"></script>
+      <script src="js/camerastates.js"></script>
+      <script src="js/geopins.js"></script>
+      <script src="js/visualize.js"></script>
+      <script src="js/visualize_lines.js"></script>
+      <script src="js/markers.js"></script>
+      <script src="js/svgtoy.js" type="text/javascript"></script>
+
+      <script type="x-shader/x-vertex" id="vertexshader">
+        uniform float amplitude;
+        attribute float size;
+        attribute vec3 customColor;
+        varying vec3 vColor;
+
+        void main() {
+          vColor = customColor;
+          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+          gl_PointSize = size;
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      </script>
+
+      <script type="x-shader/x-fragment" id="fragmentshader">
+        uniform vec3 color;
+        uniform sampler2D texture;
+        varying vec3 vColor;
+
+        void main() {
+          gl_FragColor = vec4( color * vColor, 1.0 );
+          gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+
+        }
+      </script>
+
+      <script id="globeVertexShader" type="x-shader/x-vertex">
+        varying vec3 vNormal;
+        varying vec2 vUv;
+
+        void main() {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0);
+          vNormal = normalize( normalMatrix * normal );
+          vUv = uv;
+        }
+      </script>
+
+      <script id="globeFragmentShader" type="x-shader/x-fragment">
+        uniform sampler2D mapIndex;
+        uniform sampler2D lookup;
+        uniform sampler2D outline;
+        uniform float outlineLevel;
+        varying vec3 vNormal;
+        varying vec2 vUv;
+
+        void main() {
+          vec4 mapColor = texture2D( mapIndex, vUv );
+          float indexedColor = mapColor.x;
+          vec2 lookupUV = vec2( indexedColor, 0. );
+          vec4 lookupColor = texture2D( lookup, lookupUV );
+          float mask = lookupColor.x + (1.-outlineLevel) * indexedColor;
+          mask = clamp(mask,0.,1.);
+          float outlineColor = texture2D( outline, vUv ).x * outlineLevel;
+          float diffuse = mask + outlineColor;
+          gl_FragColor = vec4( vec3(diffuse), 1.  );
+        }
+      </script>
+
+      <script src="js/main.js" type="text/javascript"></script>
+    </div>
+  </body>
+</html>
+
