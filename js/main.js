@@ -74,15 +74,13 @@ for( var i in weaponLookup ){
     reverseWeaponLookup[code] = name;
 }
 
-//  A list of category colors
-var categoryColors = {
-    'mil' : 0xdd380c,
-    'civ' : 0x3dba00,
-    'ammo' : 0x154492,
-}
-
-var exportColor = 0xdd380c;
-var importColor = 0x154492;
+var pathColors = [
+    0xdd380c,
+    0x154492,
+    0xdd380c,
+    0x3dba00,
+    0x154492
+]
 
 //  the currently selected country
 var selectedCountry = null;
@@ -112,14 +110,14 @@ function start( e ){
         mapOutlineImage.src = 'images/map_outline.png';
 
         mapOutlineImage.onload = function(){
-            loadCountryCodes(function(){
+            // loadCountryCodes(function(){
                 loadWorldPins(function(){
                     loadContentData(function(){
                         initScene();
                         animate();
                     });
                 });
-            });
+            // });
         };
     };
 }
@@ -163,10 +161,10 @@ function geoPathsUpdated() {
     geoPaths = [
         {
             startPoint: {
-                // GB
+                // DE
                 coordinate: {
-                    lat: 54,
-                    lon: -2
+                    lat: 51,
+                    lon: 9
                 }
             },
             endPoint: {
@@ -177,8 +175,28 @@ function geoPathsUpdated() {
                 }
             },
             particleCount: 50,
-            particleSize: 60
+            particleSize: 60,
+            color: pathColors[3]
         },
+        {
+            startPoint: {
+                // DE
+                coordinate: {
+                    lat: 51,
+                    lon: 9
+                }
+            },
+            endPoint: {
+                // JP
+                coordinate: {
+                    lat: 36,
+                    lon: 138
+                }
+            },
+            particleCount: 50,
+            particleSize: 60,
+            color: pathColors[4]
+        }
     ];
 
     // New
@@ -266,31 +284,10 @@ function initScene() {
     sphere.id = "base";
     rotating.add( sphere );
 
-
-    for( var i in timeBins ){
-        var bin = timeBins[i].data;
-        for( var s in bin ){
-            var set = bin[s];
-
-            var exporterName = set.e.toUpperCase();
-            var importerName = set.i.toUpperCase();
-
-            //  let's track a list of actual countries listed in this data set
-            //  this is actually really slow... consider re-doing this with a map
-            if( $.inArray(exporterName, selectableCountries) < 0 )
-                selectableCountries.push( exporterName );
-
-            if( $.inArray(importerName, selectableCountries) < 0 )
-                selectableCountries.push( importerName );
-        }
-    }
-
-    console.log( selectableCountries );
-
     // load geo data (country lat lons in this case)
-    console.time('loadGeoData');
-    loadGeoData( latlonData );
-    console.timeEnd('loadGeoData');
+    // console.time('loadGeoData');
+    // loadGeoData( latlonData );
+    // console.timeEnd('loadGeoData');
 
     geoPaths = [
         {
@@ -309,14 +306,15 @@ function initScene() {
                 }
             },
             particleCount: 50,
-            particleSize: 60
+            particleSize: 60,
+            color: pathColors[1]
         },
         {
             startPoint: {
                 // GB
                 coordinate: {
-                    lat: 31,
-                    lon: -5
+                    lat: 54,
+                    lon: -2
                 }
             },
             endPoint: {
@@ -327,7 +325,8 @@ function initScene() {
                 }
             },
             particleCount: 50,
-            particleSize: 60
+            particleSize: 60,
+            color: pathColors[0]
         }
     ];
 

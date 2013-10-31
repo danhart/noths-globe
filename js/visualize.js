@@ -20,13 +20,12 @@ function getVisualizedMesh(geoPaths){
 
     geoPaths.forEach(function(geoPath, index){
         // var lineColor = thisLineIsExport ? new THREE.Color(exportColor) : new THREE.Color(importColor);
-        var lineColor = new THREE.Color(exportColor);
+        var lineColor = new THREE.Color(geoPath.color);
 
         var lastColor;
 
         //  grab the colors from the vertices
         for (s in geoPath.lineGeometry.vertices) {
-            var v = geoPath.lineGeometry.vertices[s];
             lineColors.push(lineColor);
             lastColor = lineColor;
         }
