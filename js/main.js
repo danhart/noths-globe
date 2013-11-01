@@ -345,9 +345,6 @@ function initScene() {
 
     selectVisualization(geoPaths);
 
-        // test for highlighting specific countries
-    // highlightCountry( ["United States", "Switzerland", "China"] );
-
 
     //  -----------------------------------------------------------------------------
     //  Setup our renderer
@@ -395,29 +392,9 @@ function initScene() {
 
 
 function animate() {
-
-    //  Disallow roll for now, this is interfering with keyboard input during search
-/*
-    if(keyboard.pressed('o') && keyboard.pressed('shift') == false)
-        camera.rotation.z -= 0.08;
-    if(keyboard.pressed('p') && keyboard.pressed('shift') == false)
-        camera.rotation.z += 0.08;
-*/
-
     if( rotateTargetX !== undefined && rotateTargetY !== undefined ){
-
         rotateVX += (rotateTargetX - rotateX) * 0.012;
         rotateVY += (rotateTargetY - rotateY) * 0.012;
-
-        // var move = new THREE.Vector3( rotateVX, rotateVY, 0 );
-        // var distance = move.length();
-        // if( distance > .01 )
-        //  distance = .01;
-        // move.normalize();
-        // move.multiplyScalar( distance );
-
-        // rotateVX = move.x;
-        // rotateVy = move.y;
 
         if( Math.abs(rotateTargetX - rotateX) < 0.1 && Math.abs(rotateTargetY - rotateY) < 0.1 ){
             rotateTargetX = undefined;
@@ -427,8 +404,6 @@ function animate() {
 
     rotateX += rotateVX;
     rotateY += rotateVY;
-
-    //rotateY = wrap( rotateY, -Math.PI, Math.PI );
 
     rotateVX *= 0.98;
     rotateVY *= 0.98;
@@ -460,8 +435,7 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-
-    THREE.SceneUtils.traverseHierarchy( rotating,
+    THREE.SceneUtils.traverseHierarchy(rotating,
         function(mesh) {
             if (mesh.update !== undefined) {
                 mesh.update();
@@ -510,9 +484,9 @@ var countryColorMap = {'PE':1,
 'IM':226,'GU':227,'SG':228};
 
 function getPickColor(){
-    var affectedCountries = undefined;
-    if( visualizationMesh.children[0] !== undefined )
-        affectedCountries = visualizationMesh.children[0].affectedCountries;
+    // var affectedCountries = undefined;
+    // if( visualizationMesh.children[0] !== undefined )
+    //     affectedCountries = visualizationMesh.children[0].affectedCountries;
 
     rotating.remove(visualizationMesh);
     mapUniforms['outlineLevel'].value = 0;
@@ -530,8 +504,8 @@ function getPickColor(){
     var gl = renderer.context;
     gl.preserveDrawingBuffer = true;
 
-    var mx = ( mouseX + renderer.context.canvas.width/2 );//(mouseX + renderer.context.canvas.width/2) * 0.25;
-    var my = ( -mouseY + renderer.context.canvas.height/2 );//(-mouseY + renderer.context.canvas.height/2) * 0.25;
+    var mx = ( mouseX + renderer.context.canvas.width/2 );
+    var my = ( -mouseY + renderer.context.canvas.height/2 );
     mx = Math.floor( mx );
     my = Math.floor( my );
 
