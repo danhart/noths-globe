@@ -208,20 +208,7 @@ function initScene() {
     scene.matrixAutoUpdate = false;
     // scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 
-    scene.add( new THREE.AmbientLight( 0x505050 ) );
-
-    light1 = new THREE.SpotLight( 0xeeeeee, 3 );
-    light1.position.x = 730;
-    light1.position.y = 520;
-    light1.position.z = 626;
-    light1.castShadow = true;
-    scene.add( light1 );
-
-    light2 = new THREE.PointLight( 0x222222, 14.8 );
-    light2.position.x = -640;
-    light2.position.y = -500;
-    light2.position.z = -1000;
-    scene.add( light2 );
+    scene.add( new THREE.AmbientLight( 0xFFFFFF ) );
 
     rotating = new THREE.Object3D();
     scene.add(rotating);
@@ -239,7 +226,7 @@ function initScene() {
     var material = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/earthmap1k.jpg'),
         bumpMap: THREE.ImageUtils.loadTexture('images/earthbump1k.jpg'),
-        bumpScale: 0.05,
+        bumpScale: 1,
         specularMap: THREE.ImageUtils.loadTexture('images/earthspec1k.jpg'),
         specular: new THREE.Color('grey'),
     })
@@ -354,8 +341,7 @@ function initScene() {
     camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 );
     camera.position.z = 1400;
     camera.position.y = 0;
-    camera.lookAt(scene.width/2, scene.height/2);
-    scene.add( camera );
+    camera.position.x = 0;
 
     var windowResize = THREEx.WindowResize(renderer, camera)
 }
@@ -401,7 +387,8 @@ function animate() {
     rotating.rotation.x = rotateX;
     rotating.rotation.y = rotateY;
 
-    render();
+    renderer.clear();
+    renderer.render( scene, camera );
 
     requestAnimationFrame( animate );
 
@@ -415,11 +402,6 @@ function animate() {
         var marker = markers[i];
         marker.update();
     }
-}
-
-function render() {
-    renderer.clear();
-    renderer.render( scene, camera );
 }
 
 function findCode(countryName){
