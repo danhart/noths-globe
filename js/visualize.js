@@ -141,7 +141,7 @@ function getVisualizedMesh(geoPaths){
             var nextPoint = path[particle.nextIndex];
 
             particle.copy( currentPoint );
-            particle.lerpSelf( nextPoint, particle.lerpN );
+            particle.lerp( nextPoint, particle.lerpN );
         }
         this.geometry.verticesNeedUpdate = true;
     };
