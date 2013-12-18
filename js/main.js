@@ -434,19 +434,16 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-    THREE.SceneUtils.traverseHierarchy(rotating,
-        function(mesh) {
-            if (mesh.update !== undefined) {
-                mesh.update();
-            }
+    rotating.traverse(function(mesh) {
+        if (mesh.update !== undefined) {
+            mesh.update();
         }
-    );
+    });
 
     for( var i in markers ){
         var marker = markers[i];
         marker.update();
     }
-
 }
 
 function render() {
