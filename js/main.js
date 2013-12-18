@@ -174,6 +174,26 @@ function initScene() {
 
     scene.add( new THREE.AmbientLight( 0xFFFFFF ) );
 
+    var light   = new THREE.DirectionalLight( 0xcccccc, 1 )
+    light.position.set(5,5,5);
+    scene.add( light );
+    light.castShadow    = true;
+    light.shadowCameraNear  = 0.01;
+    light.shadowCameraFar   = 15;
+    light.shadowCameraFov   = 45;
+
+    light.shadowCameraLeft  = -1;
+    light.shadowCameraRight =  1;
+    light.shadowCameraTop   =  1;
+    light.shadowCameraBottom= -1;
+    // light.shadowCameraVisible    = true;
+
+    light.shadowBias    = 0.001;
+    light.shadowDarkness    = 0.2;
+
+    light.shadowMapWidth    = 1024*2;
+    light.shadowMapHeight   = 1024*2;
+
     rotating = new THREE.Object3D();
     scene.add(rotating);
 
@@ -263,7 +283,7 @@ function initScene() {
     renderer.autoClear = false;
 
     renderer.sortObjects = false;
-    renderer.generateMipmaps = true;
+    renderer.generateMipmaps = false;
 
     glContainer.appendChild( renderer.domElement );
 
