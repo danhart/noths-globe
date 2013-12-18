@@ -163,6 +163,26 @@ function geoPathsUpdated() {
     selectVisualization(geoPaths);
 }
 
+function createCloudMesh() {
+    var geometry   = new THREE.SphereGeometry(1.02, 40, 40);
+
+    var material  = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/cloudstrans.png'),
+        side: THREE.DoubleSide,
+        opacity: 0.6,
+        transparent: true,
+        depthWrite: false
+    });
+
+    var cloudMesh = new THREE.Mesh(geometry, material);
+    cloudMesh.rotation.x = Math.PI;
+    cloudMesh.rotation.y = -Math.PI/2;
+    cloudMesh.rotation.z = Math.PI;
+    cloudMesh.id = "clouds";
+
+    return cloudMesh;
+}
+
 //  -----------------------------------------------------------------------------
 //  All the initialization stuff for THREE
 function initScene() {
@@ -172,7 +192,7 @@ function initScene() {
     scene = new THREE.Scene();
     scene.matrixAutoUpdate = false;
 
-    scene.add( new THREE.AmbientLight( 0xFFFFFF ) );
+    scene.add( new THREE.AmbientLight( 0x999999 ) );
 
     var light   = new THREE.DirectionalLight( 0xcccccc, 1 )
     light.position.set(5,5,5);
@@ -197,13 +217,15 @@ function initScene() {
     rotating = new THREE.Object3D();
     scene.add(rotating);
 
+    cloudsRotating = new THREE.Object3D();
+
     // For the globe
     var material = new THREE.MeshPhongMaterial({
-        map: THREE.ImageUtils.loadTexture('images/earthmap1k.jpg'),
-        bumpMap: THREE.ImageUtils.loadTexture('images/earthbump1k.jpg'),
-        bumpScale: 0.2,
-        specularMap: THREE.ImageUtils.loadTexture('images/earthspec1k.jpg'),
-        specular: new THREE.Color('grey'),
+        map: THREE.ImageUtils.loadTexture('images/earthmap4kadjusted.jpg'),
+        bumpMap: THREE.ImageUtils.loadTexture('images/earthbump4kadjusted.jpg'),
+        bumpScale: 0.05,
+        specularMap: THREE.ImageUtils.loadTexture('images/earthspec4kadjusted.jpg'),
+        specular: new THREE.Color('grey')
     })
 
     //  -----------------------------------------------------------------------------
@@ -215,8 +237,11 @@ function initScene() {
     sphere.rotation.z = Math.PI;
     sphere.id = "base";
 
-    scene.add(sphere);
+    var cloudMesh = createCloudMesh();
+    cloudsRotating.add( cloudMesh );
+
     rotating.add( sphere );
+    rotating.add( cloudsRotating );
 
     // load geo data (country lat lons in this case)
     // console.time('loadGeoData');
@@ -361,6 +386,8 @@ function animate() {
 
     rotating.rotation.x = rotateX;
     rotating.rotation.y = rotateY;
+
+    cloudsRotating.rotation.y += 0.0005;
 
     renderer.clear();
     renderer.render( scene, camera );
