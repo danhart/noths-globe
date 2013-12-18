@@ -269,7 +269,7 @@ function initScene() {
         // attributes:     attributes,
         vertexShader:   document.getElementById( 'globeVertexShader' ).textContent,
         fragmentShader: document.getElementById( 'globeFragmentShader' ).textContent,
-        // sizeAttenuation: true,
+        side: THREE.FrontSide
     });
 
 
@@ -277,7 +277,6 @@ function initScene() {
     //  Create the backing (sphere)
     sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), shaderMaterial );
 
-    sphere.doubleSided = false;
     sphere.rotation.x = Math.PI;
     sphere.rotation.y = -Math.PI/2;
     sphere.rotation.z = Math.PI;
