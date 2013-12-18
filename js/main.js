@@ -101,25 +101,14 @@ var assetList = [];
 //  don't look at me I'm ugly
 //
 function start( e ){
-    //  ensure the map images are loaded first!!
-    mapIndexedImage = new Image();
-    mapIndexedImage.src = 'images/map_indexed.png';
-
-    mapIndexedImage.onload = function() {
-        mapOutlineImage = new Image();
-        mapOutlineImage.src = 'images/map_outline.png';
-
-        mapOutlineImage.onload = function(){
-            // loadCountryCodes(function(){
-                loadWorldPins(function(){
-                    loadContentData(function(){
-                        initScene();
-                        animate();
-                    });
-                });
-            // });
-        };
-    };
+    // loadCountryCodes(function(){
+        loadWorldPins(function(){
+            loadContentData(function(){
+                initScene();
+                animate();
+            });
+        });
+    // });
 }
 
 
@@ -246,36 +235,18 @@ function initScene() {
     lookupTexture.minFilter = THREE.NearestFilter;
     lookupTexture.needsUpdate = true;
 
-    var indexedMapTexture = new THREE.Texture( mapIndexedImage );
-    indexedMapTexture.needsUpdate = true;
-    indexedMapTexture.magFilter = THREE.NearestFilter;
-    indexedMapTexture.minFilter = THREE.NearestFilter;
-
-    var outlinedMapTexture = new THREE.Texture( mapOutlineImage );
-    outlinedMapTexture.needsUpdate = true;
-
     // For the globe
-    var uniforms = {
-        'mapIndex': { type: 't', value: indexedMapTexture  },
-        'lookup': { type: 't', value: lookupTexture },
-        'outline': { type: 't', value: outlinedMapTexture },
-        'outlineLevel': {type: 'f', value: 1 },
-    };
-    mapUniforms = uniforms;
-
-    // For the globe
-    var shaderMaterial = new THREE.ShaderMaterial( {
-        uniforms:       uniforms,
-        // attributes:     attributes,
-        vertexShader:   document.getElementById( 'globeVertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'globeFragmentShader' ).textContent,
-        side: THREE.FrontSide
-    });
-
+    var material = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/earthmap1k.jpg'),
+        bumpMap: THREE.ImageUtils.loadTexture('images/earthbump1k.jpg'),
+        bumpScale: 0.05,
+        specularMap: THREE.ImageUtils.loadTexture('images/earthspec1k.jpg'),
+        specular: new THREE.Color('grey'),
+    })
 
     //  -----------------------------------------------------------------------------
     //  Create the backing (sphere)
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), shaderMaterial );
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), material );
 
     sphere.rotation.x = Math.PI;
     sphere.rotation.y = -Math.PI/2;
