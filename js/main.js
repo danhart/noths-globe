@@ -256,9 +256,9 @@ function initScene() {
 
     // For the globe
     var uniforms = {
-        'mapIndex': { type: 't', value: 0, texture: indexedMapTexture  },
-        'lookup': { type: 't', value: 1, texture: lookupTexture },
-        'outline': { type: 't', value: 2, texture: outlinedMapTexture },
+        'mapIndex': { type: 't', value: indexedMapTexture  },
+        'lookup': { type: 't', value: lookupTexture },
+        'outline': { type: 't', value: outlinedMapTexture },
         'outlineLevel': {type: 'f', value: 1 },
     };
     mapUniforms = uniforms;
