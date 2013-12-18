@@ -201,19 +201,21 @@ function initScene() {
     var material = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/earthmap1k.jpg'),
         bumpMap: THREE.ImageUtils.loadTexture('images/earthbump1k.jpg'),
-        bumpScale: 1,
+        bumpScale: 0.2,
         specularMap: THREE.ImageUtils.loadTexture('images/earthspec1k.jpg'),
         specular: new THREE.Color('grey'),
     })
 
     //  -----------------------------------------------------------------------------
     //  Create the backing (sphere)
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), material );
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 1, 40, 40 ), material );
 
     sphere.rotation.x = Math.PI;
     sphere.rotation.y = -Math.PI/2;
     sphere.rotation.z = Math.PI;
     sphere.id = "base";
+
+    scene.add(sphere);
     rotating.add( sphere );
 
     // load geo data (country lat lons in this case)
@@ -312,7 +314,7 @@ function initScene() {
     //  -----------------------------------------------------------------------------
     //  Setup our camera
     camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 );
-    camera.position.z = 1400;
+    camera.position.z = 12;
     camera.position.y = 0;
     camera.position.x = 0;
 
