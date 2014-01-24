@@ -164,7 +164,7 @@ function geoPathsUpdated() {
 }
 
 function createCloudMesh() {
-    var geometry   = new THREE.SphereGeometry(1.1, 40, 40);
+    var geometry   = new THREE.SphereGeometry(1.02, 40, 40);
 
     var material  = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/cloudstrans.png'),
@@ -387,7 +387,7 @@ function animate() {
     rotating.rotation.x = rotateX;
     rotating.rotation.y = rotateY;
 
-    cloudsRotating.rotation.y += 0.1;
+    cloudsRotating.rotation.y += 0.0005;
 
     renderer.clear();
     renderer.render( scene, camera );
