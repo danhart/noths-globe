@@ -169,7 +169,7 @@
     };
 
     GlobePaths.start(function() {
-        OrdersApi.get(function(orders) {
+        OrdersApi.getLastTwenty(function(orders) {
             convertOrdersToPaths(0, orders, [], function(paths) {
                 GlobePaths.setPaths(paths);
             });

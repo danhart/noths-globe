@@ -2,73 +2,27 @@ var masterContainer = document.getElementById('visualization');
 
 var overlay = document.getElementById('visualization');
 
-var mapIndexedImage;
-var mapOutlineImage;
-
 //  where in html to hold all our things
 var glContainer = document.getElementById( 'glContainer' );
 
-//  contains a list of country codes with their matching country names
-var isoFile = 'country_iso3166.json';
-var latlonFile = 'country_lat_lon.json'
-
 var camera, scene, renderer, controls;
 
-var pinsBase, pinsBaseMat;
-var lookupCanvas
-var lookupTexture;
-var backTexture;
-var worldCanvas;
 var sphere;
 var rotating;
 var visualizationMesh;
-
-var mapUniforms;
-
-//  contains the data loaded from the arms data file
-//  contains a list of years, followed by trades within that year
-//  properties for each "trade" is: e - exporter, i - importer, v - value (USD), wc - weapons code (see table)
-var timeBins;
-
-//  contains latlon data for each country
-var latlonData;
-
-//  contains above but organized as a mapped list via ['countryname'] = countryobject
-//  each country object has data like center of country in 3d space, lat lon, country name, and country code
-var countryData = {};
 
 // These are the points on the globe. There is one geoPin per coordinate. Each
 // geoPin has a vector in 3d space, i.e. geoPin.vector. Also lat/lon etc.
 var geoPins;
 var geoPaths;
 
-//  contains a list of country code to country name for running lookups
-var countryLookup;
-
-var selectableCountries = [];
-
-//  the currently selected country
-var selectedCountry = null;
-var previouslySelectedCountry = null;
-
-//  contains info about what year, what countries, categories, etc that's being visualized
-var selectionData;
-
 //  when the app is idle this will be true
 var idle = false;
 
-//  for svg loading
-//  deprecated, not using svg loading anymore
-var assetList = [];
-
 function start(callback) {
-    loadWorldPins(function(){
-        loadContentData(function(){
-            initScene();
-            animate();
-            callback();
-        });
-    });
+    initScene();
+    animate();
+    callback();
 }
 
 function setPaths(paths) {
