@@ -199,8 +199,6 @@ function animate() {
         rotateVX *= -0.95;
     }
 
-    TWEEN.update();
-
     rotating.rotation.x = rotateX;
     rotating.rotation.y = rotateY;
 
