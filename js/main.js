@@ -47,41 +47,6 @@ var countryLookup;
 
 var selectableCountries = [];
 
-/*
-    930100 â€“ military weapons, and includes some light weapons and artillery as well as machine guns and assault rifles etc.
-    930190 â€“ military firearms â€“ eg assault rifles, machineguns (sub, light, heavy etc), combat shotguns, machine pistols etc
-    930200 â€“ pistols and revolvers
-    930320 â€“ Sporting shotguns (anything that isnâ€™t rated as a military item).
-    930330 â€“ Sporting rifles (basically anything that isnâ€™t fully automatic).
-    930621 â€“ shotgun shells
-    930630 â€“ small caliber ammo (anything below 14.5mm which isnâ€™t fired from a shotgun.
-*/
-
-//  a list of weapon 'codes'
-//  now they are just strings of categories
-//  Category Name : Category Code
-var weaponLookup = {
-    'Military Weapons'      : 'mil',
-    'Civilian Weapons'      : 'civ',
-    'Ammunition'            : 'ammo',
-};
-
-//  a list of the reverse for easy lookup
-var reverseWeaponLookup = new Object();
-for( var i in weaponLookup ){
-    var name = i;
-    var code = weaponLookup[i];
-    reverseWeaponLookup[code] = name;
-}
-
-var pathColors = [
-    0xdd380c,
-    0x154492,
-    0xdd380c,
-    0x3dba00,
-    0x154492
-]
-
 //  the currently selected country
 var selectedCountry = null;
 var previouslySelectedCountry = null;
@@ -96,71 +61,24 @@ var idle = false;
 //  deprecated, not using svg loading anymore
 var assetList = [];
 
-//  TODO
-//  use underscore and ".after" to load these in order
-//  don't look at me I'm ugly
-//
-function start( e ){
-    // loadCountryCodes(function(){
-        loadWorldPins(function(){
-            loadContentData(function(){
-                initScene();
-                animate();
-            });
+function start(callback) {
+    loadWorldPins(function(){
+        loadContentData(function(){
+            initScene();
+            animate();
+            callback();
         });
-    // });
+    });
 }
 
-function geoPathsUpdated() {
-    geoPaths = [
-        {
-            startPoint: {
-                // DE
-                coordinate: {
-                    lat: 51,
-                    lon: 9
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 38,
-                    lon: -97
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[3]
-        },
-        {
-            startPoint: {
-                // DE
-                coordinate: {
-                    lat: 51,
-                    lon: 9
-                }
-            },
-            endPoint: {
-                // JP
-                coordinate: {
-                    lat: 36,
-                    lon: 138
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[4]
-        }
-    ];
-
-    // New
-    addVectorsToGeoPaths();
+function setPaths(paths) {
+    addVectorsToGeoPaths(paths);
 
     console.time('buildDataVizGeometries');
-    buildDataVizGeometries(geoPaths);
+    buildDataVizGeometries(paths);
     console.timeEnd('buildDataVizGeometries');
 
-    selectVisualization(geoPaths);
+    selectVisualization(paths);
 }
 
 function createCloudMesh() {
@@ -243,64 +161,9 @@ function initScene() {
     rotating.add( sphere );
     rotating.add( cloudsRotating );
 
-    // load geo data (country lat lons in this case)
-    // console.time('loadGeoData');
-    // loadGeoData( latlonData );
-    // console.timeEnd('loadGeoData');
-
-    geoPaths = [
-        {
-            startPoint: {
-                // GB
-                coordinate: {
-                    lat: 54,
-                    lon: -2
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 38,
-                    lon: -97
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[1]
-        },
-        {
-            startPoint: {
-                // GB
-                coordinate: {
-                    lat: 54,
-                    lon: -2
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 59,
-                    lon: 50
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[0]
-        }
-    ];
-
-    // New
-    addVectorsToGeoPaths();
-    console.log(geoPaths);
-
-    console.time('buildDataVizGeometries');
-    buildDataVizGeometries(geoPaths);
-    console.timeEnd('buildDataVizGeometries');
-
+    // For the paths
     visualizationMesh = new THREE.Object3D();
     rotating.add(visualizationMesh);
-
-    selectVisualization(geoPaths);
 
 
     //  -----------------------------------------------------------------------------
@@ -406,3 +269,13 @@ function animate() {
     }
 }
 
+GlobePaths = (function() {
+    return {
+        start: function(callback) {
+            start(callback);
+        },
+        setPaths: function(paths) {
+            setPaths(paths);
+        }
+    }
+})();

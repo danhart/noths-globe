@@ -2,7 +2,7 @@ function buildDataVizGeometries(paths){
 
     var loadLayer = document.getElementById('loading');
 
-    geoPaths.forEach(function(geoPath, index){
+    paths.forEach(function(geoPath, index){
         var startPoint = geoPath.startPoint;
         var endPoint = geoPath.endPoint;
         geoPath.lineGeometry = makeConnectionLineGeometry(startPoint.vector, endPoint.vector);

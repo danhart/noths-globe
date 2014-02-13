@@ -1,5 +1,5 @@
-function addVectorsToGeoPaths() {
-    geoPaths.forEach(function(geoPath, index){
+function addVectorsToGeoPaths(paths) {
+    paths.forEach(function(geoPath, index){
         var startPoint = geoPath.startPoint;
         var endPoint = geoPath.endPoint;
 
