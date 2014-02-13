@@ -150,53 +150,17 @@ function getVisualizedMesh(geoPaths){
 }
 
 function selectVisualization(geoPaths){
-    //  clear off the path's internally held color data we used from last highlight
-    geoPaths.forEach(function(geoPath, index){
-        geoPath.mapColor = 0;
-    });
-
-    // //  clear markers
-    // for( var i in selectableCountries ){
-    //     removeMarkerFromCountry( selectableCountries[i] );
-    // }
-
-    //  clear children
-    while( visualizationMesh.children.length > 0 ){
-        var c = visualizationMesh.children[0];
-        visualizationMesh.remove(c);
-    }
-
     //  build the mesh
     console.time('getVisualizedMesh');
     var mesh = getVisualizedMesh(geoPaths);
     console.timeEnd('getVisualizedMesh');
 
+    //  clear existing mesh
+    while( visualizationMesh.children.length > 0 ){
+        var c = visualizationMesh.children[0];
+        visualizationMesh.remove(c);
+    }
+
     //  add it to scene graph
     visualizationMesh.add( mesh );
-
-    // Could be used to rotate to a particular point in the future
-    // if( previouslySelectedCountry !== selectedCountry ){
-    //     if( selectedCountry ){
-    //         rotateTargetX = selectedCountry.lat * Math.PI/180;
-    //         var targetY0 = -(selectedCountry.lon - 9) * Math.PI / 180;
-    //         var piCounter = 0;
-
-    //         while(true) {
-    //             var targetY0Neg = targetY0 - Math.PI * 2 * piCounter;
-    //             var targetY0Pos = targetY0 + Math.PI * 2 * piCounter;
-    //             if(Math.abs(targetY0Neg - rotating.rotation.y) < Math.PI) {
-    //                 rotateTargetY = targetY0Neg;
-    //                 break;
-    //             } else if(Math.abs(targetY0Pos - rotating.rotation.y) < Math.PI) {
-    //                 rotateTargetY = targetY0Pos;
-    //                 break;
-    //             }
-    //             piCounter++;
-    //             rotateTargetY = wrap(targetY0, -Math.PI, Math.PI);
-    //         }
-
-    //         rotateVX *= 0.6;
-    //         rotateVY *= 0.6;
-    //     }
-    // }
 }

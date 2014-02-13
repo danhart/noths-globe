@@ -22,9 +22,9 @@ function vectorFromCoordinate(coordinate) {
     vector.y = Math.cos(phi) * rad;
     vector.z = Math.sin(phi) * Math.sin(theta) * rad;
 
-    console.log(vector.x);
-    console.log(vector.y);
-    console.log(vector.z);
+    // console.log(vector.x);
+    // console.log(vector.y);
+    // console.log(vector.z);
 
     return vector;
 }
