@@ -186,7 +186,7 @@ function animate() {
         rotateVY *= 0.6;
     }
 
-    rotateY += controllers.spin * 0.01;
+    rotateY += 0;
 
     //  constrain the pivot up/down to the poles
     //  force a bit of bounce back action when hitting the poles
