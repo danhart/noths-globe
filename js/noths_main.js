@@ -1,6 +1,32 @@
 (function() {
+    var googleGeoCoder = {
+        api: new google.maps.Geocoder(),
+        locationCache: {},
+        getLocation: function(address, callback) {
+            var self = this;
+
+            if (this.locationCache[address]) {
+                callback(self.locationCache[address]);
+                return
+            }
+
+            this.api.geocode({
+                address: address
+            }, function(geoData, status) {
+                if (!geoData || !geoData[0] || !geoData[0].geometry) {
+                    self.locationCache[address] = null;
+                    callback(self.locationCache[address]);
+                    return;
+                }
+
+                self.locationCache[address] = geoData[0].geometry.location;
+                callback(self.locationCache[address]);
+            });
+        }
+    }
+
     var OrdersApi = {
-        get: function(orders) {
+        get: function(callback) {
             $.ajax({
                 url: "/map",
                 data: { last_order_id: this.last_order_id },
@@ -8,123 +34,145 @@
                 dataType: 'json',
                 success: function(data){
                     this.last_order_id = data.last_order_id;
-                    orders(data.products);
+                    callback(data.products);
                 }
             });
         },
-    }
+        getLastTwenty: function(callback) {
+            var orders = [];
+            var self = this;
 
-    orders = [];
-    setInterval(function() {
-        OrdersApi.get(function(newOrders) {
-            orders.contact(newOrders);
-            orders = orders.slice(-20);
+            setInterval(function() {
+                self.get(function(newOrders) {
+                    orders = orders.concat(newOrders);
+                    orders = orders.slice(-20);
+                    callback(orders);
+                });
+            }, 5000);
+        }
+    };
+
+
+    var OrderPathBuilder = function() {
+        var PATH_COLORS = [
+            0xdd380c, // Red
+            0x3dba00, // Green
+            0x154492, // Blue
+            0xe011cf, // Purple
+            0xe29d08  // Orange
+        ];
+
+        var OrderPathBuilder = function(order, geocoder) {
+            this.order = order;
+            this.geocoder = geocoder;
+        };
+
+        OrderPathBuilder.prototype.create = function(callback) {
+            var self = this;
+
+            getCoordinates.call(this, function(coordinates) {
+                if (!coordinates) {
+                    callback(null);
+                    return;
+                }
+                console.log(self.order.product.imageURL.mini);
+
+                callback({
+                    startPoint: {
+                        coordinate: coordinates[0]
+                    },
+                    endPoint: {
+                        coordinate: coordinates[1],
+                        marker: $("<div />", {
+                            "class": "end_point_marker marker",
+                            "text":  self.order.product.title
+                        }).append('<img class="marker_image" src="' + self.order.product.imageURL.mini + '"/>')
+                    },
+                    particleCount: randomParticleCount(),
+                    particleSize: randomParticleSize(),
+                    color: randomColor()
+                })
+            });
+        };
+
+        var randomParticleCount = function() {
+            return randBetweenRange(5, 200);
+        };
+
+        var randomParticleSize = function() {
+            return randBetweenRange(10, 500);
+        };
+
+        var randomColor = function() {
+            return PATH_COLORS[Math.floor(Math.random() * PATH_COLORS.length)];
+        };
+
+        var randBetweenRange = function(min,max) {
+            return Math.floor(Math.random()*(max-min+1)+min);
+        };
+
+        var getCoordinates = function(callback) {
+            var self = this;
+
+            var startAddress = this.order.product.geo.place +
+                               ', ' +
+                               this.order.product.geo.county +
+                               ', ' +
+                               this.order.product.geo.country;
+
+            startAddress = startAddress.replace(/ ,/, "");
+
+            var endAddress = this.order.geo.place +
+                             ', ' +
+                             this.order.geo.county +
+                             ', ' +
+                             this.order.geo.country;
+
+            endAddress = endAddress.replace(/ ,/, "");
+
+            self.geocoder.getLocation(startAddress, function(startLocation) {
+                self.geocoder.getLocation(endAddress, function(endLocation) {
+                    if (!startLocation || !endLocation) {
+                        callback(null);
+                        return;
+                    }
+
+                    callback([
+                        {
+                            lat: startLocation.lat(),
+                            lon: startLocation.lng()
+                        },
+                        {
+                            lat: endLocation.lat(),
+                            lon: endLocation.lng()
+                        }
+                    ])
+                });
+            });
+        };
+
+        return OrderPathBuilder;
+    }();
+
+    var convertOrdersToPaths = function(counter, orders, paths, callback) {
+        if (orders.length == counter + 1) {
+            callback(paths);
+            return;
+        }
+
+        new OrderPathBuilder(orders[counter], googleGeoCoder).create(function(path) {
+            if (path) paths.push(path);
+
+            counter++;
+            convertOrdersToPaths(counter, orders, paths, callback);
         });
-    }, 5000);
+    };
 
-    var pathColors = [
-        0xdd380c,
-        0x154492,
-        0xdd380c,
-        0x3dba00,
-        0x154492
-    ]
-
-    var newPaths = [
-        {
-            startPoint: {
-                // DE
-                coordinate: {
-                    lat: 51,
-                    lon: 9
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 38,
-                    lon: -97
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[3]
-        },
-        {
-            startPoint: {
-                // DE
-                coordinate: {
-                    lat: 51,
-                    lon: 9
-                }
-            },
-            endPoint: {
-                // JP
-                coordinate: {
-                    lat: 36,
-                    lon: 138
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[4]
-        }
-    ];
-
-    var geoPaths = [
-        {
-            startPoint: {
-                // GB
-                coordinate: {
-                    lat: 54,
-                    lon: -2
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 38,
-                    lon: -97
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[1]
-        },
-        {
-            startPoint: {
-                // GB
-                coordinate: {
-                    lat: 54,
-                    lon: -2
-                }
-            },
-            endPoint: {
-                // US
-                coordinate: {
-                    lat: 59,
-                    lon: 50
-                }
-            },
-            particleCount: 50,
-            particleSize: 60,
-            color: pathColors[0]
-        }
-    ];
-
-    // GlobePaths.addPath(paths);
-    // GlobePaths.removePath(index);
     GlobePaths.start(function() {
-        var paths;
-
-        setInterval(function() {
-            if (paths == geoPaths) {
-                paths = newPaths;
-            } else {
-                paths = geoPaths;
-            }
-
-            GlobePaths.setPaths(paths);
-        }, 5000);
+        OrdersApi.get(function(orders) {
+            convertOrdersToPaths(0, orders, [], function(paths) {
+                GlobePaths.setPaths(paths);
+            });
+        });
     });
 })();
