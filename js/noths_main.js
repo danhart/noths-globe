@@ -70,7 +70,6 @@
                     callback(null);
                     return;
                 }
-                console.log(self.order.product.imageURL.mini);
 
                 callback({
                     startPoint: {
