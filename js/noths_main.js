@@ -28,7 +28,7 @@
     var OrdersApi = {
         get: function(callback) {
             $.ajax({
-                url: "/orders.json",
+                url: "/noths_order_geo",
                 type: 'GET',
                 dataType: 'json',
                 success: function(data){
