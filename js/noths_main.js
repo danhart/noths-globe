@@ -81,7 +81,7 @@
                         marker: $("<div />", {
                             "class": "end_point_marker marker",
                             "text":  self.order.product.title
-                        }).append('<img class="marker_image" src="' + self.order.product.imageURL.mini + '"/>')
+                        }).append('<img class="marker_image" src="http://www.notonthehighstreet.com' + self.order.product.imageURL.mini + '"/>')
                     },
                     particleCount: randomParticleCount(),
                     particleSize: randomParticleSize(),
