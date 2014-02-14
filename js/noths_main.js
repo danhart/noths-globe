@@ -28,25 +28,20 @@
     var OrdersApi = {
         get: function(callback) {
             $.ajax({
-                url: "/map",
-                data: { last_order_id: this.last_order_id },
+                url: "/orders.json",
                 type: 'GET',
                 dataType: 'json',
                 success: function(data){
-                    this.last_order_id = data.last_order_id;
-                    callback(data.products);
+                    callback(data);
                 }
             });
         },
-        getLastTwenty: function(callback) {
-            var orders = [];
+        getLoop: function(callback) {
             var self = this;
 
             setInterval(function() {
                 self.get(function(newOrders) {
-                    orders = orders.concat(newOrders);
-                    orders = orders.slice(-20);
-                    callback(orders);
+                    callback(newOrders);
                 });
             }, 5000);
         }
@@ -169,7 +164,7 @@
     };
 
     GlobePaths.start(function() {
-        OrdersApi.getLastTwenty(function(orders) {
+        OrdersApi.getLoop(function(orders) {
             convertOrdersToPaths(0, orders, [], function(paths) {
                 GlobePaths.setPaths(paths);
             });
