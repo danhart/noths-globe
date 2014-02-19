@@ -19,6 +19,7 @@ define(function() {
                 address: address
             }, function(geoData, status) {
                 if (!geoData || !geoData[0] || !geoData[0].geometry) {
+                    console.log(status);
                     self.locationCache[address] = null;
                     callback("cannot lookup address data");
                     return;
@@ -29,7 +30,7 @@ define(function() {
                 // We throttle the return of this otherwise google complains with a OVER_QUERY_LIMIT status
                 setTimeout(function() {
                     callback(null, self.locationCache[address]);
-                }, 500);
+                }, 600);
             });
         }
     };
