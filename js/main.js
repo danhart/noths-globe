@@ -1,4 +1,4 @@
-(function() {
+require(["lib/async", "lib/socket.io"], function(async, io) {
     var geoService = {
         api: new google.maps.Geocoder(),
         locationCache: {},
@@ -175,4 +175,4 @@
             if (globeStarted) GlobePaths.setPaths(pathCollection.getData());
         });
     });
-})();
+});

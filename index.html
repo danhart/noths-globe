@@ -58,8 +58,13 @@
 
       <script src="js/lib/globe_paths/globe_paths.js" type="text/javascript"></script>
 
-      <script src="http://85.17.23.72:10052/noths_order_geo/socket.io/socket.io.js"></script>
-      <script src="js/lib/async.js" type="text/javascript"></script>
+      <script>
+          var require = {
+              baseUrl: "js/"
+          };
+      </script>
+
+      <script src="js/lib/require.min.js" type="text/javascript"></script>
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
       <script src="js/main.js" type="text/javascript"></script>
     </div>
