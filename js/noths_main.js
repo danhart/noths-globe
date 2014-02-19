@@ -6,8 +6,13 @@
             var self = this;
 
             if (this.locationCache[address]) {
-                callback(self.locationCache[address]);
-                return
+                callback(null, self.locationCache[address]);
+                return;
+            }
+
+            if (this.locationCache[address] === null) {
+                callback("cannot lookup address data");
+                return;
             }
 
             this.api.geocode({
@@ -15,157 +20,152 @@
             }, function(geoData, status) {
                 if (!geoData || !geoData[0] || !geoData[0].geometry) {
                     self.locationCache[address] = null;
-                    callback(self.locationCache[address]);
+                    callback("cannot lookup address data");
                     return;
                 }
 
                 self.locationCache[address] = geoData[0].geometry.location;
-                callback(self.locationCache[address]);
-            });
-        }
-    }
 
-    var OrdersApi = {
-        get: function(callback) {
-            $.ajax({
-                url: "/noths_order_geo",
-                type: 'GET',
-                dataType: 'json',
-                success: function(data){
-                    callback(data);
-                }
+                // We throttle the return of this otherwise google complains with a OVER_QUERY_LIMIT status
+                setTimeout(function() {
+                    callback(null, self.locationCache[address]);
+                }, 500);
             });
-        },
-        getLoop: function(callback) {
-            var self = this;
-
-            setInterval(function() {
-                self.get(function(newOrders) {
-                    callback(newOrders);
-                });
-            }, 5000);
         }
     };
 
-
-    var OrderPathBuilder = function() {
-        var PATH_COLORS = [
-            0xdd380c, // Red
-            0x3dba00, // Green
-            0x154492, // Blue
-            0xe011cf, // Purple
-            0xe29d08  // Orange
-        ];
-
-        var OrderPathBuilder = function(order, geocoder) {
-            this.order = order;
-            this.geocoder = geocoder;
-        };
-
-        OrderPathBuilder.prototype.create = function(callback) {
-            var self = this;
-
-            getCoordinates.call(this, function(coordinates) {
-                if (!coordinates) {
-                    callback(null);
-                    return;
-                }
-
-                callback({
-                    startPoint: {
-                        coordinate: coordinates[0]
-                    },
-                    endPoint: {
-                        coordinate: coordinates[1],
-                        marker: $("<div />", {
-                            "class": "end_point_marker marker",
-                            "text":  self.order.product.title
-                        }).append('<img class="marker_image" src="http://www.notonthehighstreet.com' + self.order.product.imageURL.mini + '"/>')
-                    },
-                    particleCount: randomParticleCount(),
-                    particleSize: randomParticleSize(),
-                    color: randomColor()
-                })
-            });
-        };
-
-        var randomParticleCount = function() {
-            return randBetweenRange(5, 200);
-        };
-
-        var randomParticleSize = function() {
-            return randBetweenRange(10, 500);
-        };
-
-        var randomColor = function() {
-            return PATH_COLORS[Math.floor(Math.random() * PATH_COLORS.length)];
-        };
-
-        var randBetweenRange = function(min,max) {
-            return Math.floor(Math.random()*(max-min+1)+min);
-        };
-
-        var getCoordinates = function(callback) {
-            var self = this;
-
-            var startAddress = this.order.product.geo.place +
-                               ', ' +
-                               this.order.product.geo.county +
-                               ', ' +
-                               this.order.product.geo.country;
-
-            startAddress = startAddress.replace(/ ,/, "");
-
-            var endAddress = this.order.geo.place +
-                             ', ' +
-                             this.order.geo.county +
-                             ', ' +
-                             this.order.geo.country;
-
-            endAddress = endAddress.replace(/ ,/, "");
-
-            self.geocoder.getLocation(startAddress, function(startLocation) {
-                self.geocoder.getLocation(endAddress, function(endLocation) {
-                    if (!startLocation || !endLocation) {
-                        callback(null);
-                        return;
-                    }
-
-                    callback([
-                        {
-                            lat: startLocation.lat(),
-                            lon: startLocation.lng()
-                        },
-                        {
-                            lat: endLocation.lat(),
-                            lon: endLocation.lng()
-                        }
-                    ])
-                });
-            });
-        };
-
-        return OrderPathBuilder;
-    }();
-
-    var convertOrdersToPaths = function(counter, orders, paths, callback) {
-        if (orders.length == counter + 1) {
-            callback(paths);
-            return;
+    var pathCollection = {
+        _paths: [],
+        push: function(path) {
+            this._paths.push(path);
+            if (this._paths.length > 10) this._paths.shift();
+        },
+        getData: function() {
+            return this._paths;
         }
+    };
 
-        new OrderPathBuilder(orders[counter], googleGeoCoder).create(function(path) {
-            if (path) paths.push(path);
+    var randBetweenRange = function(min,max) {
+        return Math.floor(Math.random()*(max-min+1)+min);
+    };
 
-            counter++;
-            convertOrdersToPaths(counter, orders, paths, callback);
+    var PATH_COLORS = [
+        0xdd380c, // Red
+        0x3dba00, // Green
+        0x154492, // Blue
+        0xe011cf, // Purple
+        0xe29d08  // Orange
+    ];
+
+    var Path = function() {
+        this.startPoint = {};
+        this.endPoint = {};
+    };
+
+    Path.prototype.randomParticleCount = function() {
+        this.particleCount = randBetweenRange(5, 200);
+    };
+
+    Path.prototype.randomParticleSize = function() {
+        this.particleSize = randBetweenRange(10, 500);
+    };
+
+    Path.prototype.randomColor = function() {
+        this.color = PATH_COLORS[Math.floor(Math.random() * PATH_COLORS.length)];
+    };
+
+    var Order = function(orderData) {
+        this.geo = orderData.geo;
+        this.product = orderData.product;
+    };
+
+    Order.prototype.getDeliveryAddress = function() {
+        var deliveryAddress = this.geo.place +
+            ', ' +
+            this.geo.county +
+            ', ' +
+            this.geo.country;
+
+        deliveryAddress = deliveryAddress.replace(/ ,/, '');
+        deliveryAddress = deliveryAddress.replace(/,,/, ',');
+
+        return deliveryAddress;
+    };
+
+    Order.prototype.getSenderAddress = function() {
+        var senderAddress = this.product.geo.place +
+            ', ' +
+            this.product.geo.county +
+            ', ' +
+            this.product.geo.country;
+
+        senderAddress = senderAddress.replace(/ ,/, '');
+        senderAddress = senderAddress.replace(/,,/, ',');
+
+        return senderAddress;
+    };
+
+    // Async
+    Order.prototype.createPath = function(callback) {
+        var deliveryAddress = this.getDeliveryAddress();
+        var senderAddress = this.getSenderAddress();
+
+        async.mapSeries([senderAddress, deliveryAddress], googleGeoCoder.getLocation.bind(googleGeoCoder), function(err, coordinates) {
+            if (err) {
+                callback(null, null);
+                return;
+            }
+
+            var path = new Path();
+
+            path.randomParticleCount();
+            path.randomParticleSize();
+            path.randomColor();
+
+            path.startPoint.coordinate = {
+                lat: coordinates[0].lat(),
+                lon: coordinates[0].lng()
+            }
+
+            path.endPoint.coordinate = {
+                lat: coordinates[1].lat(),
+                lon: coordinates[1].lng()
+            };
+
+            callback(null, path);
         });
     };
 
+    var OrderCollection = function(orders) {
+        this._orders = orders;
+    };
+
+    OrderCollection.prototype.createPaths = function(callback) {
+        var createPathPointers = this._orders.map(function(order) {
+            return order.createPath.bind(order);
+        })
+
+        async.series(createPathPointers, callback);
+    };
+
     GlobePaths.start(function() {
-        OrdersApi.getLoop(function(orders) {
-            convertOrdersToPaths(0, orders, [], function(paths) {
-                GlobePaths.setPaths(paths);
+        var socket = io.connect('http://85.17.23.72:10052', {
+            resource: 'noths_order_geo/socket.io'
+        });
+
+        socket.on('intl_orders', function(ordersData) {
+            var orders = ordersData.map(function(orderData) {
+                return new Order(orderData);
+            });
+
+            var orderCollection = new OrderCollection(orders);
+
+            orderCollection.createPaths(function(err, paths) {
+                paths.forEach(function(path) {
+                    if (path) pathCollection.push(path);
+                });
+
+                GlobePaths.setPaths(pathCollection.getData());
             });
         });
     });
