@@ -214,11 +214,6 @@ function animate() {
             mesh.update();
         }
     });
-
-    for( var i in markers ){
-        var marker = markers[i];
-        marker.update();
-    }
 }
 
 GlobePaths = (function() {
