@@ -18,12 +18,11 @@ require(["lib/socket.io", "path_collection", "order", "order_collection"], funct
 
         var orderCollection = new OrderCollection(orders);
 
-        orderCollection.createPaths(function(err, paths) {
-            paths.forEach(function(path) {
-                if (path) pathCollection.push(path);
-            });
-
-            if (globeStarted) GlobePaths.setPaths(pathCollection.getData());
+        orderCollection.createPaths(function(path) {
+            if (path) {
+                pathCollection.push(path);
+                if (globeStarted) GlobePaths.setPaths(pathCollection.getData());
+            }
         });
     });
 });
