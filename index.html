@@ -4,10 +4,11 @@
     <title>Globe</title>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="reset.css">
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 
-  <body id="dataviz" class="">
+  <body>
     <div id="wrapper">
       <div id="loading">
         <h2>Loading...</h2>
@@ -15,6 +16,17 @@
 
       <div id="visualization" >
         <div id="glContainer">
+        </div>
+
+        <div id="hud">
+          <img class="noths_logo" src="http://cdn1.notonthehighstreet.com/images/header/logos/tag_logo_uk@2x.png" />
+
+          <div class="orders_module">
+            <h2>International Orders</h2>
+
+            <ul class="orders">
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -60,7 +72,10 @@
 
       <script>
           var require = {
-              baseUrl: "js/"
+            baseUrl: "js/",
+            paths: {
+              jquery: 'lib/jquery-2.1.0.min'
+            }
           };
       </script>
 

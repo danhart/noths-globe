@@ -1,40 +1,41 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic);
 
+@font-face {
+  font-family: 'noths2';
+  src: url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.eot?#iefix') format('embedded-opentype'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.woff') format('woff'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'noths2-bold';
+  src: url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.eot?#iefix') format('embedded-opentype'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.woff') format('woff'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.ttf')  format('truetype');
+}
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 /* Main Styles */
-body { color:#000000; font-family:'Roboto'; font-size:14px; height:768px; min-width: 1280px; min-height: 860px; overflow: hidden;}
-a { color:#ffffff; text-decoration:none; }
-a:hover { color:#8eb423; }
-h1 { font-family:'Roboto'; font-weight:normal; }
-h2 { font-family:'Roboto'; font-weight:normal; }
-li { list-style-type:none; }
-
-#dataviz {
-  background-color:   #000000;
-  margin:       0px;
-  overflow-y:     hidden;
-  overflow-x:         auto;
+body {
+  color: #eee;
+  font-family: 'noths2';
+  font-size: 14px;
+  overflow: hidden;
+  background-color: #000000;
+  margin: 0px;
 }
 
-#visualization{
-  position: fixed;
+h1, h2, h3, h4, h4, h5, h6 {
+  font-weight: normal;
 }
 
-#loading{
-  background-color: #111;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -38px;
-  margin-left: -380px;
-  color: white;
-  padding: 16px 30px;
-  width: 700px;
-  height: 45px;
-  line-height: 11px;
-}
+li { list-style-type: none; }
 
-
-/*Remove all text selection (except for Text Input)*/
 body {
   -webkit-touch-callout: none;
   -webkit-user-select:   none;
@@ -51,4 +52,61 @@ input[type='text'] {
   -moz-user-select:      text;
   -ms-user-select:       text;
   user-select:           text;
+}
+
+#loading {
+  display: none;
+}
+
+#hud {
+  padding: 20px;
+  position: fixed;
+  width: 300px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255,255,255,0.15);
+  border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+#hud .noths_logo {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.orders_module > h2 {
+  font-size: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.order {
+  border-width: 1px;
+  border-style: solid;
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+  overflow: hidden;
+  color: #ccc;
+  background-color: rgba(0,0,0,0.15);
+}
+
+.order img {
+  float: left;
+  margin-right: 10px;
+}
+
+.order .product_title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #eee;
+}
+
+.order .partner_name {
+  margin-bottom: 10px;
+}
+
+.order p {
+  margin-bottom: 10px;
 }

@@ -32,6 +32,7 @@ define(["lib/async", "geo_service", "path"], function(async, geoService, Path) {
 
     // Async
     Order.prototype.createPath = function(callback) {
+        var self = this;
         var deliveryAddress = this.getDeliveryAddress();
         var senderAddress = this.getSenderAddress();
 
@@ -46,6 +47,7 @@ define(["lib/async", "geo_service", "path"], function(async, geoService, Path) {
             path.randomParticleCount();
             path.randomParticleSize();
             path.randomColor();
+            self.path = path;
 
             path.startPoint.coordinate = {
                 lat: coordinates[0].lat(),
