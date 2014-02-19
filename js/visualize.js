@@ -149,17 +149,6 @@ function getVisualizedMesh(geoPaths){
     return splineOutline;
 }
 
-function attachMarkers(geoPaths) {
-    geoPaths.forEach(function(geoPath, index){
-        if (geoPath.endPoint.marker) {
-            attachMarker(geoPath.endPoint.vector, geoPath.endPoint.marker);
-        }
-        if (geoPath.startPoint.marker) {
-            attachMarker(geoPath.startPoint.vector, geoPath.startPoint.marker);
-        }
-    });
-}
-
 function selectVisualization(geoPaths){
     //  build the mesh
     console.time('getVisualizedMesh');
@@ -171,9 +160,6 @@ function selectVisualization(geoPaths){
         var c = visualizationMesh.children[0];
         visualizationMesh.remove(c);
     }
-
-    removeMarkers();
-    attachMarkers(geoPaths);
 
     //  add it to scene graph
     visualizationMesh.add( mesh );
