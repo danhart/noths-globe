@@ -6,6 +6,7 @@ var overlay = document.getElementById('visualization');
 var glContainer = document.getElementById( 'glContainer' );
 
 var camera, scene, renderer, controls;
+var bgScene, bgCam;
 
 var sphere;
 var rotating;
@@ -58,6 +59,23 @@ function createCloudMesh() {
 //  -----------------------------------------------------------------------------
 //  All the initialization stuff for THREE
 function initScene() {
+
+    // Background setup
+    var bg = new THREE.Mesh(
+        new THREE.PlaneGeometry(2, 2, 0),
+        new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture('images/galaxybg-darker.jpg'),
+        })
+    );
+
+    // The bg plane shouldn't care about the z-buffer.
+    bg.material.depthTest = false;
+    bg.material.depthWrite = false;
+
+    bgScene = new THREE.Scene();
+    bgCam = new THREE.Camera();
+    bgScene.add(bgCam);
+    bgScene.add(bg);
 
     //  -----------------------------------------------------------------------------
     //  Let's make a scene
@@ -122,7 +140,11 @@ function initScene() {
 
     //  -----------------------------------------------------------------------------
     //  Setup our renderer
-    renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
+
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.autoClear = false;
 
@@ -205,6 +227,7 @@ function animate() {
     cloudsRotating.rotation.y += 0.0005;
 
     renderer.clear();
+    renderer.render(bgScene, bgCam);
     renderer.render( scene, camera );
 
     requestAnimationFrame( animate );
