@@ -1,5 +1,5 @@
 (function() {
-    var googleGeoCoder = {
+    var geoService = {
         api: new google.maps.Geocoder(),
         locationCache: {},
         getLocation: function(address, callback) {
@@ -110,7 +110,7 @@
         var deliveryAddress = this.getDeliveryAddress();
         var senderAddress = this.getSenderAddress();
 
-        async.mapSeries([senderAddress, deliveryAddress], googleGeoCoder.getLocation.bind(googleGeoCoder), function(err, coordinates) {
+        async.mapSeries([senderAddress, deliveryAddress], geoService.getLocation.bind(geoService), function(err, coordinates) {
             if (err) {
                 callback(null, null);
                 return;
