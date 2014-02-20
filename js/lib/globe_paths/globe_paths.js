@@ -195,9 +195,9 @@ function animate() {
     if (dragging) {
         rotateVX *= 0.6;
         rotateVY *= 0.6;
+    } else {
+        rotateY += 0.001;
     }
-
-    rotateY += 0.1;
 
     //  constrain the pivot up/down to the poles
     //  force a bit of bounce back action when hitting the poles
