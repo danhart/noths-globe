@@ -30,7 +30,7 @@ define(function() {
                 // We throttle the return of this otherwise google complains with a OVER_QUERY_LIMIT status
                 setTimeout(function() {
                     callback(null, self.locationCache[address]);
-                }, 800);
+                }, 1000);
             });
         }
     };
