@@ -17,11 +17,11 @@ define(function() {
     };
 
     Path.prototype.randomParticleCount = function() {
-        this.particleCount = randBetweenRange(5, 200);
+        this.particleCount = randBetweenRange(5, 100);
     };
 
     Path.prototype.randomParticleSize = function() {
-        this.particleSize = randBetweenRange(10, 500);
+        this.particleSize = randBetweenRange(5, 50);
     };
 
     Path.prototype.randomColor = function() {
