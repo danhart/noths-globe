@@ -26,8 +26,8 @@ function onDocumentMouseMove( event ) {
             rotateVX += (mouseY - pmouseY) / 2 * Math.PI / 180 * 0.3;
         }
         else{
-            camera.position.x -= (mouseX - pmouseX) * .5;
-            camera.position.y += (mouseY - pmouseY) * .5;
+            camera.position.x -= (mouseX - pmouseX) * .005;
+            camera.position.y += (mouseY - pmouseY) * .005;
         }
     }
 }
