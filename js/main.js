@@ -1,4 +1,4 @@
-require(["lib/socket.io", "path_collection", "order", "order_collection"], function(io, pathCollection, Order, OrderCollection) {
+require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"], function(io, pathCollection, Order, OrderCollection, hud) {
     var socket = io.connect('http://85.17.23.72:10052', {
         resource: 'noths_order_geo/socket.io'
     });
@@ -19,8 +19,14 @@ require(["lib/socket.io", "path_collection", "order", "order_collection"], funct
         var orderCollection = new OrderCollection(orders);
 
         orderCollection.createPaths(function(err, paths) {
+            orders.forEach(function(order) {
+                if (order.path) hud.addOrder(order);
+            });
+
             paths.forEach(function(path) {
-                if (path) pathCollection.push(path);
+                if (path) {
+                    pathCollection.push(path);
+                }
             });
 
             if (globeStarted) GlobePaths.setPaths(pathCollection.getData());
