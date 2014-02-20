@@ -186,28 +186,18 @@ function initScene() {
 
 
 function animate() {
-    if( rotateTargetX !== undefined && rotateTargetY !== undefined ){
-        rotateVX += (rotateTargetX - rotateX) * 0.012;
-        rotateVY += (rotateTargetY - rotateY) * 0.012;
-
-        if( Math.abs(rotateTargetX - rotateX) < 0.1 && Math.abs(rotateTargetY - rotateY) < 0.1 ){
-            rotateTargetX = undefined;
-            rotateTargetY = undefined;
-        }
-    }
-
     rotateX += rotateVX;
     rotateY += rotateVY;
 
     rotateVX *= 0.98;
     rotateVY *= 0.98;
 
-    if(dragging || rotateTargetX !== undefined ){
+    if (dragging) {
         rotateVX *= 0.6;
         rotateVY *= 0.6;
     }
 
-    rotateY += 0;
+    rotateY += 0.1;
 
     //  constrain the pivot up/down to the poles
     //  force a bit of bounce back action when hitting the poles
