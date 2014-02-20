@@ -2,7 +2,7 @@ var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
 
 var dragging = false;
 
-var rotateX = 0, rotateY = 0;
+var rotateX = 0.4, rotateY = 0;
 var rotateVX = 0, rotateVY = 0;
 var rotateXMax = 90 * Math.PI/180;
 
