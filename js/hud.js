@@ -1,6 +1,13 @@
 define(["jquery"], function($) {
     $el = $("#hud");
     $ordersEl = $el.find(".orders");
+    $showHideButton = $el.find(".hide_show_hud");
+    eventBus = $({});
+
+    $showHideButton.on("click", function(e) {
+        e.preventDefault();
+        toggle();
+    });
 
     var addOrder = function(order) {
         $orderEl = $("<li>", {
@@ -33,7 +40,19 @@ define(["jquery"], function($) {
         $orderEl.css("border-color", "#" + order.path.color.toString(16));
     };
 
+    var toggle = function() {
+        $el.toggleClass("closed");
+        eventBus.trigger("toggle");
+    };
+
+    var isOpen = function() {
+        return !$el.hasClass("closed");
+    };
+
     return {
-        addOrder: addOrder
+        addOrder: addOrder,
+        toggle:   toggle,
+        isOpen:   isOpen,
+        on:       eventBus.on.bind(eventBus)
     }
 });

@@ -67,6 +67,36 @@ input[type='text'] {
   right: 0;
   background-color: rgba(255,255,255,0.15);
   border-left: 1px solid rgba(255,255,255,0.2);
+  -webkit-transition: -webkit-transform .5s cubic-bezier(.1, .1, .35, .8);
+  transition: transform .5s cubic-bezier(.1, .1, .35, .8);
+}
+
+#hud.closed {
+  -webkit-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+}
+
+#hud .hide_show_hud {
+  position: absolute;
+  background-image: url("images/chevron.png");
+  height: 38px;
+  width: 28px;
+  top: 50%;
+  margin-top: -19px;
+  left: -40px;
+  text-indent: -999em;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+#hud .hide_show_hud:hover {
+  opacity: 0.6;
+}
+
+#hud.closed .hide_show_hud {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Opera, Chrome, and Safari */
 }
 
 #hud .noths_logo {

@@ -20,10 +20,9 @@ var geoPaths;
 //  when the app is idle this will be true
 var idle = false;
 
-function start(callback) {
+function start() {
     initScene();
     animate();
-    callback();
 }
 
 function setPaths(paths) {
@@ -241,11 +240,14 @@ function animate() {
 
 GlobePaths = (function() {
     return {
-        start: function(callback) {
-            start(callback);
+        start: function(options) {
+            start();
         },
         setPaths: function(paths) {
             setPaths(paths);
+        },
+        getCamera: function() {
+            return camera;
         }
     }
 })();

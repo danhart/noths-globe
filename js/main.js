@@ -3,12 +3,19 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         resource: 'noths_order_geo/socket.io'
     });
 
-    // TODO: Move this state into the GlobePaths plugin and add an event for
-    // Globe Ready.
-    var globeStarted = false;
+    var setGlobePosition = function() {
+        if (hud.isOpen()) {
+            GlobePaths.getCamera().position.x += 0.4
+        } else {
+            GlobePaths.getCamera().position.x -= 0.4
+        }
+    };
 
-    GlobePaths.start(function() {
-        globeStarted = true;
+    GlobePaths.start({});
+    setGlobePosition();
+
+    hud.on("toggle", function() {
+        setGlobePosition();
     });
 
     socket.on('intl_orders', function(ordersData) {
@@ -29,7 +36,7 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
                 }
             });
 
-            if (globeStarted) GlobePaths.setPaths(pathCollection.getData());
+            GlobePaths.setPaths(pathCollection.getData());
         });
     });
 });
