@@ -12,7 +12,7 @@ define(["jquery"], function($) {
     var addOrder = function(order) {
         $orderEl = $("<li>", {
             "class": "order",
-        }).prependTo($ordersEl);
+        }).prependTo($ordersEl).hide();
 
         $("<h3>", {
             text: order.product.title,
@@ -38,6 +38,8 @@ define(["jquery"], function($) {
         }).appendTo($orderEl);
 
         $orderEl.css("border-color", "#" + order.path.color.toString(16));
+
+        $orderEl.fadeIn();
     };
 
     var toggle = function() {
