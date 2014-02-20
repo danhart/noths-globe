@@ -1,43 +1,33 @@
 var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
-var pressX = 0, pressY = 0;
 
 var dragging = false;
 
-var rotateX = 0, rotateY = 0;
+var rotateX = 0.4, rotateY = 0;
 var rotateVX = 0, rotateVY = 0;
 var rotateXMax = 90 * Math.PI/180;
-
-var rotateTargetX = undefined;
-var rotateTargetY = undefined;
 
 var keyboard = new THREEx.KeyboardState();
 
 function onDocumentMouseMove( event ) {
-
     pmouseX = mouseX;
     pmouseY = mouseY;
 
     mouseX = event.clientX - window.innerWidth * 0.5;
     mouseY = event.clientY - window.innerHeight * 0.5;
 
-    if(dragging){
-        if(keyboard.pressed("shift") == false){
-            rotateVY += (mouseX - pmouseX) / 2 * Math.PI / 180 * 0.3;
-            rotateVX += (mouseY - pmouseY) / 2 * Math.PI / 180 * 0.3;
-        }
-        else{
+    if (dragging) {
+        if (keyboard.pressed("shift")){
             camera.position.x -= (mouseX - pmouseX) * .005;
             camera.position.y += (mouseY - pmouseY) * .005;
+        } else {
+            rotateVY += (mouseX - pmouseX) / 2 * Math.PI / 180 * 0.3;
+            rotateVX += (mouseY - pmouseY) / 2 * Math.PI / 180 * 0.3;
         }
     }
 }
 
 function onDocumentMouseDown( event ) {
     dragging = true;
-    pressX = mouseX;
-    pressY = mouseY;
-    rotateTargetX = undefined;
-    rotateTargetX = undefined;
 }
 
 function onDocumentMouseUp( event ){
