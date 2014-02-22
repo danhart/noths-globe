@@ -31,36 +31,18 @@ define(["lib/async", "geo_service", "path"], function(async, geoService, Path) {
     };
 
     // Async
-    Order.prototype.createPath = function(callback) {
-        var self = this;
-        var deliveryAddress = this.getDeliveryAddress();
-        var senderAddress = this.getSenderAddress();
+    Order.prototype.createPath = function() {
+        var path = new Path();
+        this.path = path;
 
-        async.mapSeries([senderAddress, deliveryAddress], geoService.getLocation.bind(geoService), function(err, coordinates) {
-            if (err) {
-                callback(null, null);
-                return;
-            }
+        path.randomParticleCount();
+        path.randomParticleSize();
+        path.randomColor();
 
-            var path = new Path();
+        path.startPoint.coordinate = this.product.geo.coordinate;
+        path.endPoint.coordinate = this.geo.coordinate;
 
-            path.randomParticleCount();
-            path.randomParticleSize();
-            path.randomColor();
-            self.path = path;
-
-            path.startPoint.coordinate = {
-                lat: coordinates[0].lat(),
-                lon: coordinates[0].lng()
-            }
-
-            path.endPoint.coordinate = {
-                lat: coordinates[1].lat(),
-                lon: coordinates[1].lng()
-            };
-
-            callback(null, path);
-        });
+        return path;
     };
 
     return Order;

@@ -24,19 +24,16 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         });
 
         var orderCollection = new OrderCollection(orders);
+        var paths = orderCollection.createPaths();
 
-        orderCollection.createPaths(function(err, paths) {
-            orders.forEach(function(order) {
-                if (order.path) hud.addOrder(order);
-            });
-
-            paths.forEach(function(path) {
-                if (path) {
-                    pathCollection.push(path);
-                }
-            });
-
-            GlobePaths.setPaths(pathCollection.getData());
+        orders.forEach(function(order) {
+            hud.addOrder(order);
         });
+
+        paths.forEach(function(path) {
+            pathCollection.push(path);
+        });
+
+        GlobePaths.setPaths(pathCollection.getData());
     });
 });

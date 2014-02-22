@@ -4,11 +4,11 @@ define(["lib/async"], function(async) {
     };
 
     OrderCollection.prototype.createPaths = function(callback) {
-        var createPathPointers = this._orders.map(function(order) {
-            return order.createPath.bind(order);
-        })
+        var paths = this._orders.map(function(order) {
+            return order.createPath();
+        });
 
-        async.series(createPathPointers, callback);
+        return paths;
     };
 
     return OrderCollection;
