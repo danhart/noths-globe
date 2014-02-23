@@ -4,18 +4,16 @@ define(function() {
     };
 
     var PATH_COLORS = [
-        0xdd380c, // Red
-        0xdd0c0c, // Blood red
-        0xa21111, // Blood red darker
-        0x3dba00, // Green
-        0x00ba65, // Mint green
+        0x5b1907, // Red
+        0xa21111, // Blood red
+        0x1b4905, // Green
+        0x043e24, // Mint green
         0x154492, // Blue
-        0x158292, // Turquoise
-        0xe011cf, // Purple
-        0x9b0e8f, // Purple darker
-        0xe29d08, // Orange
-        0xa4740c, // Orange darker
-        0xbfb40a  // Yellow
+        0x084149, // Turquoise
+        0x9b0e8f, // Purple
+        0xa4740c, // Orange
+        0x4c4809, // Yellow
+        0x676546  // Awesome light yellow colour
     ];
 
     var Path = function() {
