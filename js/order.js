@@ -1,4 +1,4 @@
-define(["lib/async", "geo_service", "path"], function(async, geoService, Path) {
+define(["lib/async", "path"], function(async, Path) {
     var Order = function(orderData) {
         this.geo = orderData.geo;
         this.product = orderData.product;

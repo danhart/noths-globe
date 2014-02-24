@@ -5,15 +5,17 @@ define(function() {
 
     var PATH_COLORS = [
         0x5b1907, // Red
-        0xa21111, // Blood red
         0x1b4905, // Green
-        0x043e24, // Mint green
         0x154492, // Blue
-        0x084149, // Turquoise
         0x9b0e8f, // Purple
         0xa4740c, // Orange
         0x4c4809, // Yellow
         0x676546  // Awesome light yellow colour
+        // For some reason the following colours don't go through the octal -> hex converter correctly
+        // TODO: Figure out what's going on here
+        // 0xa21111, // Blood red
+        // 0x043e24, // Mint green
+        // 0x084149, // Turquoise
     ];
 
     var Path = function() {
