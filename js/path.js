@@ -22,11 +22,11 @@ define(function() {
     };
 
     Path.prototype.randomParticleCount = function() {
-        this.particleCount = randBetweenRange(5, 150);
+        this.particleCount = randBetweenRange(50, 100);
     };
 
     Path.prototype.randomParticleSize = function() {
-        this.particleSize = randBetweenRange(10, 40);
+        this.particleSize = randBetweenRange(10, 35);
     };
 
     Path.prototype.randomColor = function() {
