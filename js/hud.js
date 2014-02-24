@@ -40,6 +40,12 @@ define(["jquery"], function($) {
         $orderEl.css("border-color", "#" + order.path.color.toString(16));
 
         $orderEl.fadeIn();
+
+        limitOrdersLength();
+    };
+
+    var limitOrdersLength = function() {
+        $ordersEl.slice(50).remove();
     };
 
     var toggle = function() {
