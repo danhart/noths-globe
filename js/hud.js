@@ -45,7 +45,7 @@ define(["jquery"], function($) {
     };
 
     var limitOrdersLength = function() {
-        $ordersEl.slice(50).remove();
+        $ordersEl.find(".order").slice(50).remove();
     };
 
     var toggle = function() {
