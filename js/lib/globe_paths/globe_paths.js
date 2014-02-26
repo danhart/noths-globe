@@ -196,7 +196,7 @@ function animate() {
         rotateVX *= 0.6;
         rotateVY *= 0.6;
     } else {
-        rotateY += 0.001;
+        rotateY += 0.002;
     }
 
     //  constrain the pivot up/down to the poles
