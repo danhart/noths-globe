@@ -1,5 +1,5 @@
 require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"], function(io, pathCollection, Order, OrderCollection, hud) {
-    var socket = io.connect('http://85.17.23.72:10052', {
+    var socket = io.connect('http://159.253.142.200:10052', {
         resource: 'noths_order_geo/socket.io'
     });
 
