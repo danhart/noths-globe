@@ -1,14 +1,13 @@
 function buildDataVizGeometries(paths){
+    paths.forEach(function(path, index){
+        if (path.lineGeometry) return;
 
-    var loadLayer = document.getElementById('loading');
-
-    paths.forEach(function(geoPath, index){
-        var startPoint = geoPath.startPoint;
-        var endPoint = geoPath.endPoint;
-        geoPath.lineGeometry = makeConnectionLineGeometry(startPoint.vector, endPoint.vector);
+        // TODO: Should be path.makeConnectionLineGeometry()
+        path.lineGeometry = makeConnectionLineGeometry(
+            path.startPoint.vector,
+            path.endPoint.vector
+        );
     });
-
-    loadLayer.style.display = 'none';
 }
 
 function getVisualizedMesh(geoPaths){

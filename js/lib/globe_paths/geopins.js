@@ -3,6 +3,8 @@ function addVectorsToGeoPaths(paths) {
         var startPoint = geoPath.startPoint;
         var endPoint = geoPath.endPoint;
 
+        if (startPoint.vector && endPoint.vector) return;
+
         startPoint.vector = vectorFromCoordinate(startPoint.coordinate);
         endPoint.vector = vectorFromCoordinate(endPoint.coordinate);
     });
