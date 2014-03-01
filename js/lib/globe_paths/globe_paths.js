@@ -206,6 +206,17 @@ function animate() {
         rotateVX *= -0.95;
     }
 
+    // Restore the globe to a default X rotation of 0.4
+    if (!dragging) {
+        if (rotateX > 0.4) {
+            rotateX -= (rotateX - 0.4) * 0.001
+        }
+
+        if (rotateX < 0.4) {
+            rotateX -= (rotateX - 0.4) * 0.001
+        }
+    }
+
     rotating.rotation.x = rotateX;
     rotating.rotation.y = rotateY;
 
