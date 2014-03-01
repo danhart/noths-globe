@@ -128,6 +128,9 @@ input[type='text'] {
   overflow: hidden;
   color: #ddd;
   background-color: rgba(0,0,0,0.25);
+  cursor: pointer;
+  -webkit-transition: opacity .5s cubic-bezier(.1, .1, .35, .8);
+  transition: opacity .5s cubic-bezier(.1, .1, .35, .8);
 }
 
 .order img {
@@ -168,4 +171,16 @@ input[type='text'] {
   bottom: 0;
   overflow: scroll;
   padding: 12px 20px 0;
+}
+
+.orders:hover .order {
+  opacity: 0.5;
+}
+
+.orders .order:hover {
+  opacity: 1;
+}
+
+#hud.restricted .order:hover {
+  opacity: 1;
 }
