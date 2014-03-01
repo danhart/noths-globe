@@ -1,8 +1,8 @@
 define(["jquery"], function($) {
-    $el = $("#hud");
-    $ordersEl = $el.find(".orders");
-    $showHideButton = $el.find(".hide_show_hud");
-    eventBus = $({});
+    var $el = $("#hud");
+    var $ordersEl = $el.find(".orders");
+    var $showHideButton = $el.find(".hide_show_hud");
+    var eventBus = $({});
 
     $showHideButton.on("click", function(e) {
         e.preventDefault();
@@ -10,9 +10,11 @@ define(["jquery"], function($) {
     });
 
     var addOrder = function(order) {
-        $orderEl = $("<li>", {
+        var $orderEl = $("<li>", {
             "class": "order",
         }).prependTo($ordersEl).hide();
+
+        $orderEl.data("order", order);
 
         $("<h3>", {
             text: order.product.title,
@@ -41,8 +43,31 @@ define(["jquery"], function($) {
 
         $orderEl.fadeIn();
 
+        $orderEl.on("click", function(e) {
+            e.preventDefault();
+            setHighlight($orderEl);
+        });
+
         limitOrdersLength();
     };
+
+    var setHighlight = function($orderEl) {
+        $orderEl.toggleClass("highlight");
+
+        if ($ordersEl.find(".highlight").length) {
+            eventBus.trigger("restrict");
+        } else {
+            eventBus.trigger("unrestrict");
+        }
+    };
+
+    eventBus.on("restrict", function() {
+        $el.addClass("restricted");
+    })
+
+    eventBus.on("unrestrict", function() {
+        $el.removeClass("restricted");
+    })
 
     var limitOrdersLength = function() {
         $ordersEl.find(".order").slice(100).remove();
@@ -57,10 +82,17 @@ define(["jquery"], function($) {
         return !$el.hasClass("closed");
     };
 
+    var getHighlightedOrders = function() {
+        return $ordersEl.find(".highlight").map(function() {
+            return $(this).data("order");
+        }).get();
+    };
+
     return {
-        addOrder: addOrder,
-        toggle:   toggle,
-        isOpen:   isOpen,
-        on:       eventBus.on.bind(eventBus)
+        addOrder:             addOrder,
+        toggle:               toggle,
+        isOpen:               isOpen,
+        getHighlightedOrders: getHighlightedOrders,
+        on:                   eventBus.on.bind(eventBus)
     }
 });

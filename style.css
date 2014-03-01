@@ -76,6 +76,14 @@ input[type='text'] {
   transform: translate3d(100%, 0, 0);
 }
 
+#hud.restricted .order {
+  opacity: 0.5;
+}
+
+#hud.restricted .order.highlight {
+  opacity: 1;
+}
+
 #hud .hide_show_hud {
   position: absolute;
   background-image: url("images/chevron.png");
@@ -139,4 +147,25 @@ input[type='text'] {
 
 .order p {
   margin-bottom: 10px;
+}
+
+.order.highlight {
+  box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.orders_wrapper {
+  position: absolute;
+  top: 198px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.orders {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: scroll;
+  padding: 12px 20px 0;
 }

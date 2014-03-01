@@ -18,6 +18,18 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         setGlobePosition();
     });
 
+    hud.on("restrict", function() {
+        var paths = hud.getHighlightedOrders().map(function(order) {
+            return order.path;
+        });
+
+        GlobePaths.setPaths(paths);
+    });
+
+    hud.on("unrestrict", function() {
+        GlobePaths.setPaths(pathCollection.getData());
+    });
+
     socket.on('intl_orders', function(ordersData) {
         var orders = ordersData.map(function(orderData) {
             return new Order(orderData);
@@ -34,6 +46,8 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
             pathCollection.push(path);
         });
 
-        GlobePaths.setPaths(pathCollection.getData());
+        if (!hud.restricted) {
+            GlobePaths.setPaths(pathCollection.getData());
+        }
     });
 });

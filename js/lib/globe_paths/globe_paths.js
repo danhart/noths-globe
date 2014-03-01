@@ -1,6 +1,4 @@
-var masterContainer = document.getElementById('visualization');
-
-var overlay = document.getElementById('visualization');
+var masterContainer = document.getElementById('glContainer');
 
 //  where in html to hold all our things
 var glContainer = document.getElementById( 'glContainer' );
@@ -158,8 +156,6 @@ function initScene() {
     document.addEventListener( 'mousemove', onDocumentMouseMove, true );
     document.addEventListener( 'windowResize', onDocumentResize, false );
 
-    //masterContainer.addEventListener( 'mousedown', onDocumentMouseDown, true );
-    //masterContainer.addEventListener( 'mouseup', onDocumentMouseUp, false );
     document.addEventListener( 'mousedown', onDocumentMouseDown, true );
     document.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
