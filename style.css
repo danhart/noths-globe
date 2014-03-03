@@ -120,7 +120,7 @@ input[type='text'] {
 }
 
 .order {
-  border-width: 3px;
+  border-width: 1px;
   border-style: solid none none none;
   display: block;
   margin-bottom: 20px;
@@ -150,6 +150,7 @@ input[type='text'] {
 
 .order p {
   margin-bottom: 10px;
+  margin-left: 100px;
 }
 
 .order.highlight {

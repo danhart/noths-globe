@@ -39,7 +39,7 @@ define(["jquery"], function($) {
             "class": "delivery_address"
         }).appendTo($orderEl);
 
-        $orderEl.css("border-color", "#" + order.path.color.toString(16));
+        $orderEl.css("border-color", order.path.lightColor);
 
         $orderEl.fadeIn();
 
