@@ -3,12 +3,14 @@
 @font-face {
   font-family: 'noths2';
   src: url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.eot?#iefix') format('embedded-opentype'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.woff') format('woff'),
   url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_regular.ttf')  format('truetype');
 }
 
 @font-face {
   font-family: 'noths2-bold';
   src: url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.eot?#iefix') format('embedded-opentype'),
+  url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.woff') format('woff'),
   url('http://www.notonthehighstreet.com/stylesheets/fonts/noths_sans_2_semibold.ttf')  format('truetype');
 }
 
