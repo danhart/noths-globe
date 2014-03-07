@@ -41,11 +41,6 @@ define(function() {
             light: "#fdf9b9"
         },
         {
-            // Mint green
-            dark:  0x043e24,
-            light: "#10e988"
-        },
-        {
             // Turquoise
             dark:  0x084149,
             light: "#09d9f6"
