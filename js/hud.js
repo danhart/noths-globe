@@ -3,6 +3,7 @@ define(["jquery"], function($) {
     var $ordersEl = $el.find(".orders");
     var $showHideButton = $el.find(".hide_show_hud");
     var eventBus = $({});
+    var unrestrictTimeout;
 
     $showHideButton.on("click", function(e) {
         e.preventDefault();
@@ -63,11 +64,33 @@ define(["jquery"], function($) {
 
     eventBus.on("restrict", function() {
         $el.addClass("restricted");
-    })
+        startAutoUnrestrictTimeout();
+    });
 
     eventBus.on("unrestrict", function() {
         $el.removeClass("restricted");
-    })
+        clearAutoUnrestrictTimeout();
+    });
+
+    var startAutoUnrestrictTimeout = function() {
+        clearAutoUnrestrictTimeout();
+
+        unrestrictTimeout = window.setTimeout(function() {
+            eventBus.trigger("unrestrict");
+            removeAllHighlights();
+        }, 1000 * 60 * 5);
+    };
+
+    var clearAutoUnrestrictTimeout = function() {
+        if (unrestrictTimeout) {
+            window.clearTimeout(unrestrictTimeout);
+            unrestrictTimeout = undefined;
+        }
+    };
+
+    var removeAllHighlights = function() {
+        $ordersEl.find(".highlight").removeClass("highlight");
+    };
 
     var limitOrdersLength = function() {
         $ordersEl.find(".order").slice(100).remove();
