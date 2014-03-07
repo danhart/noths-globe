@@ -30,12 +30,12 @@ define(["jquery"], function($) {
         $orderEl.append('<img src="' + imageSrc + '">');
 
         $("<p>", {
-            text: "from: " + order.getSenderAddress(),
+            text: "sent from: " + order.getSenderAddress(),
             "class": "sender_address"
         }).appendTo($orderEl);
 
         $("<p>", {
-            text: "to: " + order.getDeliveryAddress(),
+            text: "delivered to: " + order.getDeliveryAddress(),
             "class": "delivery_address"
         }).appendTo($orderEl);
 
