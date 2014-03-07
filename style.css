@@ -121,7 +121,7 @@ input[type='text'] {
 }
 
 .order {
-  border-width: 1px;
+  border-width: 2px;
   border-style: solid none none none;
   display: block;
   margin-bottom: 20px;
