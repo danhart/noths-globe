@@ -22,7 +22,7 @@
 
 /* Main Styles */
 body {
-  color: #eee;
+  color: #fff;
   font-family: 'noths2';
   font-size: 14px;
   overflow: hidden;
@@ -127,7 +127,7 @@ input[type='text'] {
   margin-bottom: 20px;
   padding: 10px;
   overflow: hidden;
-  color: #ddd;
+  color: #fff;
   background-color: rgba(0,0,0,0.25);
   cursor: pointer;
   -webkit-transition: opacity .5s cubic-bezier(.1, .1, .35, .8);
@@ -142,7 +142,7 @@ input[type='text'] {
 .order .product_title {
   font-size: 18px;
   margin-bottom: 10px;
-  color: #eee;
+  color: #fff;
 }
 
 .order .partner_name {
