@@ -35,18 +35,18 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         GlobePaths.setPaths(pathCollection.getData());
     });
 
-    socket.on('intl-order', function(orderData) {
-        var order = new Order(orderData);
-        var orders = [order];
+    socket.on('order', function(orderData) {
+        // Filter out orders that don't have coordinate data
+        if (!orderData.product.geo.coordinate) return;
+        if (!orderData.geo.coordinate) return;
 
-        var orderCollection = new OrderCollection(orders);
+        var order = new Order(orderData);
+
+        var orderCollection = new OrderCollection([order]);
         var paths = orderCollection.createPaths();
 
         hud.addOrder(order);
-
-        paths.forEach(function(path) {
-            pathCollection.push(path);
-        });
+        pathCollection.push(paths[0]);
 
         if (!hud.restricted) {
             GlobePaths.setPaths(pathCollection.getData());
