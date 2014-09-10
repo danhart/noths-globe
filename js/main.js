@@ -35,7 +35,7 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         GlobePaths.setPaths(pathCollection.getData());
     });
 
-    socket.on('intl_order', function(orderData) {
+    socket.on('intl-order', function(orderData) {
         var order = new Order(orderData);
         var orders = [order];
 
