@@ -5,14 +5,19 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
 
     var setGlobePosition = function() {
         if (hud.isOpen()) {
-            GlobePaths.getCamera().position.x += 0.4
+            GlobePaths.getCamera().position.x += 0.4;
         } else {
-            GlobePaths.getCamera().position.x -= 0.4
+            GlobePaths.getCamera().position.x -= 0.4;
         }
     };
 
     GlobePaths.start({});
     setGlobePosition();
+
+    socket.emit('order-query', {
+        last: 100,
+        international: true
+    });
 
     hud.on("toggle", function() {
         setGlobePosition();
@@ -30,17 +35,14 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         GlobePaths.setPaths(pathCollection.getData());
     });
 
-    socket.on('intl_orders', function(ordersData) {
-        var orders = ordersData.map(function(orderData) {
-            return new Order(orderData);
-        });
+    socket.on('intl_order', function(orderData) {
+        var order = new Order(orderData);
+        var orders = [order];
 
         var orderCollection = new OrderCollection(orders);
         var paths = orderCollection.createPaths();
 
-        orders.forEach(function(order) {
-            hud.addOrder(order);
-        });
+        hud.addOrder(order);
 
         paths.forEach(function(path) {
             pathCollection.push(path);
