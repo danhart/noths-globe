@@ -27,7 +27,7 @@ define(["jquery"], function($) {
             "class": "partner_name"
         }).appendTo($orderEl);
 
-        var imageSrc = "http://www.notonthehighstreet.com" + order.product.imageURL.mini;
+        var imageSrc = order.product.imageURL.mini;
         $orderEl.append('<img src="' + imageSrc + '">');
 
         $("<p>", {
