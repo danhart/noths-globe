@@ -42,7 +42,7 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud",
         GlobePaths.setPaths(paths);
     };
 
-    var paths2010, paths2009;
+    var paths2010, paths2009, paths2008;
 
     $.get('js/paths2010.json', function(paths) {
         paths2010 = paths;
@@ -50,6 +50,15 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud",
 
     $.get('js/paths2009.json', function(paths) {
         paths2009 = paths;
+    });
+
+    $.get('js/paths2008.json', function(paths) {
+        paths2008 = paths;
+    });
+
+    $(".2008").click(function(e) {
+        e.preventDefault();
+        setPaths(paths2008);
     });
 
     $(".2009").click(function(e) {
