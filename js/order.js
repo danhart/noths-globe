@@ -32,15 +32,16 @@ define(["lib/async", "path"], function(async, Path) {
 
     // Async
     Order.prototype.createPath = function() {
-        var path = new Path();
+        var path = new Path({
+            startPoint: this.product.geo.coordinate,
+            endPoint: this.geo.coordinate
+        });
+
         this.path = path;
 
-        path.randomParticleCount();
-        path.randomParticleSize();
+        path.randomParticleCount(50, 100);
+        path.randomParticleSize(10, 35);
         path.randomColor();
-
-        path.startPoint.coordinate = this.product.geo.coordinate;
-        path.endPoint.coordinate = this.geo.coordinate;
 
         return path;
     };

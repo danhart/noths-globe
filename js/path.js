@@ -47,17 +47,28 @@ define(function() {
         }
     ];
 
-    var Path = function() {
-        this.startPoint = {};
-        this.endPoint = {};
+    var Path = function(pathData) {
+        this.startPoint = {
+            coordinate: {
+                lat: parseFloat(pathData.startPoint.lat),
+                lon: parseFloat(pathData.startPoint.lon)
+            }
+        };
+
+        this.endPoint = {
+            coordinate: {
+                lat: parseFloat(pathData.endPoint.lat),
+                lon: parseFloat(pathData.endPoint.lon)
+            }
+        };
     };
 
-    Path.prototype.randomParticleCount = function() {
-        this.particleCount = randBetweenRange(50, 100);
+    Path.prototype.randomParticleCount = function(start, end) {
+        this.particleCount = randBetweenRange(start, end);
     };
 
-    Path.prototype.randomParticleSize = function() {
-        this.particleSize = randBetweenRange(10, 35);
+    Path.prototype.randomParticleSize = function(start, end) {
+        this.particleSize = randBetweenRange(start, end);
     };
 
     Path.prototype.randomColor = function() {
