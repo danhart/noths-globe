@@ -1,4 +1,4 @@
-require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"], function(io, pathCollection, Order, OrderCollection, hud) {
+require(["lib/socket.io", "path_collection", "order", "order_collection", "hud", "path"], function(io, pathCollection, Order, OrderCollection, hud, Path) {
     var socket = io.connect('http://159.253.142.200:10052', {
         resource: 'noths_order_geo/socket.io'
     });
@@ -23,6 +23,46 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         setGlobePosition();
     });
 
+    var setPaths = function(paths) {
+        paths = paths.filter(function(pathData) {
+            return pathData && pathData.startPoint && pathData.endPoint;
+        });
+
+        paths = paths.filter(function(path) {
+            return !isNaN(path.startPoint.lat) && !isNaN(path.startPoint.lon) && !isNaN(path.endPoint.lat) && !isNaN(path.endPoint.lon);
+        });
+
+        paths = paths.map(function(pathData) {
+            path = new Path(pathData);
+            path.setup();
+
+            return path;
+        });
+
+        GlobePaths.setPaths(paths);
+    };
+
+    var paths2010, paths2009;
+
+    $.get('js/paths2010.json', function(paths) {
+        paths2010 = paths;
+    });
+
+    $.get('js/paths2009.json', function(paths) {
+        paths2009 = paths;
+    });
+
+    $(".2009").click(function(e) {
+        e.preventDefault();
+        setPaths(paths2009);
+    });
+
+    $(".2010").click(function(e) {
+        e.preventDefault();
+        setPaths(paths2010);
+    });
+
+
     hud.on("restrict", function() {
         var paths = hud.getHighlightedOrders().map(function(order) {
             return order.path;
@@ -35,21 +75,21 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud"]
         GlobePaths.setPaths(pathCollection.getData());
     });
 
-    socket.on('order', function(orderData) {
-        // Filter out orders that don't have coordinate data
-        if (!orderData.product.geo.coordinate) return;
-        if (!orderData.geo.coordinate) return;
+    // socket.on('order', function(orderData) {
+    //     // Filter out orders that don't have coordinate data
+    //     if (!orderData.product.geo.coordinate) return;
+    //     if (!orderData.geo.coordinate) return;
 
-        var order = new Order(orderData);
+    //     var order = new Order(orderData);
 
-        var orderCollection = new OrderCollection([order]);
-        var paths = orderCollection.createPaths();
+    //     var orderCollection = new OrderCollection([order]);
+    //     var paths = orderCollection.createPaths();
 
-        hud.addOrder(order);
-        pathCollection.push(paths[0]);
+    //     hud.addOrder(order);
+    //     pathCollection.push(paths[0]);
 
-        if (!hud.restricted) {
-            GlobePaths.setPaths(pathCollection.getData());
-        }
-    });
+    //     if (!hud.restricted) {
+    //         GlobePaths.setPaths(pathCollection.getData());
+    //     }
+    // });
 });

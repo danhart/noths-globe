@@ -190,3 +190,22 @@ input[type='text'] {
 #hud.restricted .order:hover {
   opacity: 1;
 }
+
+#filter_buttons {
+  position: absolute;
+  top: 0;
+  padding: 10px;
+}
+
+.filter_button {
+  float: left;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.filter_button:hover {
+  background-color: rgba(255,255,255,0.2);
+}

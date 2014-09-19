@@ -47,17 +47,34 @@ define(function() {
         }
     ];
 
-    var Path = function() {
-        this.startPoint = {};
-        this.endPoint = {};
+    var Path = function(pathData) {
+        this.startPoint = {
+            coordinate: {
+                lat: parseFloat(pathData.startPoint.lat),
+                lon: parseFloat(pathData.startPoint.lon)
+            }
+        };
+
+        this.endPoint = {
+            coordinate: {
+                lat: parseFloat(pathData.endPoint.lat),
+                lon: parseFloat(pathData.endPoint.lon)
+            }
+        };
+    };
+
+    Path.prototype.setup = function() {
+        this.randomParticleCount();
+        this.randomParticleSize();
+        this.randomColor();
     };
 
     Path.prototype.randomParticleCount = function() {
-        this.particleCount = randBetweenRange(50, 100);
+        this.particleCount = randBetweenRange(1, 10);
     };
 
     Path.prototype.randomParticleSize = function() {
-        this.particleSize = randBetweenRange(10, 35);
+        this.particleSize = randBetweenRange(20, 30);
     };
 
     Path.prototype.randomColor = function() {
