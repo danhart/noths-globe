@@ -42,7 +42,11 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud",
         GlobePaths.setPaths(paths);
     };
 
-    var paths2010, paths2009, paths2008;
+    var paths2010, paths2009, paths2008, paths2011;
+
+    $.get('js/paths2011.json', function(paths) {
+        paths2011 = paths;
+    });
 
     $.get('js/paths2010.json', function(paths) {
         paths2010 = paths;
@@ -71,6 +75,10 @@ require(["lib/socket.io", "path_collection", "order", "order_collection", "hud",
         setPaths(paths2010);
     });
 
+    $(".2011").click(function(e) {
+        e.preventDefault();
+        setPaths(paths2011);
+    });
 
     hud.on("restrict", function() {
         var paths = hud.getHighlightedOrders().map(function(order) {

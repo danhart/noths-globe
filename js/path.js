@@ -70,11 +70,11 @@ define(function() {
     };
 
     Path.prototype.randomParticleCount = function() {
-        this.particleCount = randBetweenRange(1, 10);
+        this.particleCount = randBetweenRange(5, 10);
     };
 
     Path.prototype.randomParticleSize = function() {
-        this.particleSize = randBetweenRange(20, 30);
+        this.particleSize = randBetweenRange(30, 30);
     };
 
     Path.prototype.randomColor = function() {
